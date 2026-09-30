@@ -71,20 +71,58 @@ string display(Stack& s) {
 
 // SOAL 1
 bool push(Stack& s, int nilai) {
-    return false;
+    Node* newNode = new Node();
+    newNode->data = nilai;
+    newNode->next = s.top;
+    s.top = newNode;
+    return true;
 }
 
 // SOAL 2
 bool pop(Stack& s, int& nilai) {
-    return false;
+    if (isEmpty(s)) {
+        return false;
+    }
+
+    Node* temp = s.top;
+    nilai = temp->data;
+    s.top = s.top->next;
+    delete temp;
+    return true;
 }
 
 // SOAL 3
 void clear(Stack& s) {
+    while (s.top != nullptr) {
+        Node* hapus = s.top;
+        s.top = s.top->next;
+        delete hapus;
+    }
+    cout << "\nSeluruh node dalam Stack Linked List berhasil dibebaskan!\n";
 }
 
 // SOAL 4
 bool kurungSeimbang(const string& ekspresi) {
+    if (ekspresi.empty()) {
+        return true;
+    }
+
+    int panjang_teks = ekspresi.length();
+
+    if (ekspresi[0] == '[' && ekspresi[panjang_teks - 1] == ']') return true;
+    else if (ekspresi[0] == '{' && ekspresi[panjang_teks - 1] == '}') return true;
+    else if (ekspresi[0] == '(' && ekspresi[panjang_teks - 1] == ')') return true;
+    else if (ekspresi[0] == '(' && ekspresi[panjang_teks - 1] == ')') return true;
+    else {
+        return false;
+    }
+
+    for (int i = 0; i < panjang_teks - 1; i++) {
+        if ((ekspresi[i] != '(' || ekspresi[i] != ')') || (ekspresi[i] != '{' || ekspresi[i] != '}') || (ekspresi[i] != '[' || ekspresi[i] != ']')) {
+            return true;
+        }
+    }
+
     return false;
 }
 
