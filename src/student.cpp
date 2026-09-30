@@ -98,32 +98,37 @@ void clear(Stack& s) {
         s.top = s.top->next;
         delete hapus;
     }
-    cout << "\nSeluruh node dalam Stack Linked List berhasil dibebaskan!\n";
 }
 
 // SOAL 4
 bool kurungSeimbang(const string& ekspresi) {
-    if (ekspresi.empty()) {
-        return true;
-    }
+    Stack s;
+    inisialisasi(s);
 
-    int panjang_teks = ekspresi.length();
+    for (int i = 0; i < ekspresi.length(); i++) {
+        char c = ekspresi[i];
 
-    if (ekspresi[0] == '[' && ekspresi[panjang_teks - 1] == ']') return true;
-    else if (ekspresi[0] == '{' && ekspresi[panjang_teks - 1] == '}') return true;
-    else if (ekspresi[0] == '(' && ekspresi[panjang_teks - 1] == ')') return true;
-    else if (ekspresi[0] == '(' && ekspresi[panjang_teks - 1] == ')') return true;
-    else {
-        return false;
-    }
+        if (c == '(' || c == '[' || c == '{') {
+            push(s, c);
+        } 
+        else if (c == ')' || c == ']' || c == '}') {
+            int Top;
+            if (!pop(s, Top)) {
+                clear(s);
+                return false;
+            }
 
-    for (int i = 0; i < panjang_teks - 1; i++) {
-        if ((ekspresi[i] != '(' || ekspresi[i] != ')') || (ekspresi[i] != '{' || ekspresi[i] != '}') || (ekspresi[i] != '[' || ekspresi[i] != ']')) {
-            return true;
+            if ((c == ')' && Top != '(') ||
+                (c == ']' && Top != '[') ||
+                (c == '}' && Top != '{')) {
+                clear(s);
+                return false;
+            }
         }
     }
-
-    return false;
+    bool seimbang = isEmpty(s);
+    clear(s);
+    return seimbang;
 }
 
 // =============================================================================
